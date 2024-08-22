@@ -46,94 +46,97 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="min-h-screen flex justify-center items-center">
-        <div className="max-w-6xl mx-auto py-12">
-          <h1 className="text-4xl font-bold text-center mb-3">Available Products</h1>
-          <p className="text-center mb-12">Lorem ipsum dolor sit amet consectetur adipisicing elit. <br /> Ad, sequi. Libero reprehenderit ab dolorum ex.</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
-            <div className="rounded-2xl overflow-hidden bg-transparent">
-              <img
-                src="https://via.placeholder.com/400"
-                alt="Roadster"
-                className="w-full h-80 object-cover rounded-2xl"
-              />
-              <div className="flex justify-between items-start bg-transparent py-4">
-                <div className="flex flex-col gap-2">
-                  <h3 className="text-xl font-semibold">Roadster</h3>
-                  <p className="text-sm text-gray-500">Black Solid Round Neck</p>
-                  <div className="flex items-center gap-2 mt-[5px]">
-                    <span className="text-2xl font-semibold text-blue-500">$80</span>
-                    <span className="text-gray-500 text-sm line-through">$100</span>
-                  </div>
+      <div className="min-h-screen flex justify-center items-center bg-gray-100 dark:bg-gray-800">
+      <div className="max-w-6xl mx-auto py-12">
+        <h1 className="text-4xl font-bold text-center mb-3 text-gray-900 dark:text-white">Available Products</h1>
+        <p className="text-center mb-12 text-gray-700 dark:text-gray-300">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. <br />
+          Ad, sequi. Libero reprehenderit ab dolorum ex.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
+          <div className="rounded-2xl overflow-hidden bg-white dark:bg-gray-900">
+            <img
+              src="https://via.placeholder.com/400"
+              alt="Roadster"
+              className="w-full h-80 object-cover rounded-2xl"
+            />
+            <div className="flex justify-between items-start py-4 px-6 bg-gray-50 dark:bg-gray-800">
+              <div className="flex flex-col gap-2">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Roadster</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Black Solid Round Neck</p>
+                <div className="flex items-center gap-2 mt-[5px]">
+                  <span className="text-2xl font-semibold text-blue-500">$80</span>
+                  <span className="text-gray-500 text-sm line-through">$100</span>
                 </div>
-                <button className="bg-transparent p-3 rounded-full border-2 border-gray-300">
-                  <HiOutlineShoppingBag className="text-2xl" />
-                </button>
               </div>
+              <button className="bg-transparent p-3 rounded-full border-2 border-gray-300 dark:border-gray-700">
+                <HiOutlineShoppingBag className="text-2xl text-gray-900 dark:text-gray-300" />
+              </button>
             </div>
-            <div className="rounded-2xl overflow-hidden bg-transparent">
-              <img
-                src="https://via.placeholder.com/400"
-                alt="Blue Blazer"
-                className="w-full h-80 object-cover rounded-2xl"
-              />
-              <div className="flex justify-between items-start bg-transparent py-4">
-                <div className="flex flex-col gap-2">
-                  <h3 className="text-xl font-semibold">Blue Blazer</h3>
-                  <p className="text-sm text-gray-500">Men’s clothes</p>
-                  <div className="flex items-center gap-2 mt-[5px]">
-                    <span className="text-2xl font-semibold text-blue-500">$120</span>
-                    <span className="text-gray-500 text-sm line-through">$149</span>
-                  </div>
+          </div>
+          <div className="rounded-2xl overflow-hidden bg-white dark:bg-gray-900">
+            <img
+              src="https://via.placeholder.com/400"
+              alt="Blue Blazer"
+              className="w-full h-80 object-cover rounded-2xl"
+            />
+            <div className="flex justify-between items-start py-4 px-6 bg-gray-50 dark:bg-gray-800">
+              <div className="flex flex-col gap-2">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Blue Blazer</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Men’s clothes</p>
+                <div className="flex items-center gap-2 mt-[5px]">
+                  <span className="text-2xl font-semibold text-blue-500">$120</span>
+                  <span className="text-gray-500 text-sm line-through">$149</span>
                 </div>
-                <button className="bg-transparent p-3 rounded-full border-2 border-gray-300">
-                  <HiOutlineShoppingBag className="text-2xl" />
-                </button>
               </div>
+              <button className="bg-transparent p-3 rounded-full border-2 border-gray-300 dark:border-gray-700">
+                <HiOutlineShoppingBag className="text-2xl text-gray-900 dark:text-gray-300" />
+              </button>
             </div>
-            <div className="rounded-2xl overflow-hidden bg-transparent">
-              <img
-                src="https://via.placeholder.com/400"
-                alt="Black Shirt"
-                className="w-full h-80 object-cover rounded-2xl"
-              />
-              <div className="flex justify-between items-start bg-transparent py-4">
-                <div className="flex flex-col gap-2">
-                  <h3 className="text-xl font-semibold">Black Shirt</h3>
-                  <p className="text-sm text-gray-500">Shirts</p>
-                  <div className="flex items-center gap-2 mt-[5px]">
-                    <span className="text-2xl font-semibold text-blue-500">$75</span>
-                    <span className="text-gray-500 text-sm line-through">$100</span>
-                  </div>
+          </div>
+          <div className="rounded-2xl overflow-hidden bg-white dark:bg-gray-900">
+            <img
+              src="https://via.placeholder.com/400"
+              alt="Black Shirt"
+              className="w-full h-80 object-cover rounded-2xl"
+            />
+            <div className="flex justify-between items-start py-4 px-6 bg-gray-50 dark:bg-gray-800">
+              <div className="flex flex-col gap-2">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Black Shirt</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Shirts</p>
+                <div className="flex items-center gap-2 mt-[5px]">
+                  <span className="text-2xl font-semibold text-blue-500">$75</span>
+                  <span className="text-gray-500 text-sm line-through">$100</span>
                 </div>
-                <button className="bg-transparent p-3 rounded-full border-2 border-gray-300">
-                  <HiOutlineShoppingBag className="text-2xl" />
-                </button>
               </div>
+              <button className="bg-transparent p-3 rounded-full border-2 border-gray-300 dark:border-gray-700">
+                <HiOutlineShoppingBag className="text-2xl text-gray-900 dark:text-gray-300" />
+              </button>
             </div>
-            <div className="rounded-2xl overflow-hidden bg-transparent">
-              <img
-                src="https://via.placeholder.com/400"
-                alt="Beige T-shirt"
-                className="w-full h-80 object-cover rounded-2xl"
-              />
-              <div className="flex justify-between items-start bg-transparent py-4">
-                <div className="flex flex-col gap-2">
-                  <h3 className="text-xl font-semibold">Beige T-shirt</h3>
-                  <p className="text-sm text-gray-500">Women’s clothes</p>
-                  <div className="flex items-center gap-2 mt-[5px]">
-                    <span className="text-2xl font-semibold text-blue-500">$50</span>
-                    <span className="text-gray-500 text-sm line-through">$75</span>
-                  </div>
+          </div>
+          <div className="rounded-2xl overflow-hidden bg-white dark:bg-gray-900">
+            <img
+              src="https://via.placeholder.com/400"
+              alt="Beige T-shirt"
+              className="w-full h-80 object-cover rounded-2xl"
+            />
+            <div className="flex justify-between items-start py-4 px-6 bg-gray-50 dark:bg-gray-800">
+              <div className="flex flex-col gap-2">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Beige T-shirt</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Women’s clothes</p>
+                <div className="flex items-center gap-2 mt-[5px]">
+                  <span className="text-2xl font-semibold text-blue-500">$50</span>
+                  <span className="text-gray-500 text-sm line-through">$75</span>
                 </div>
-                <button className="bg-transparent p-3 rounded-full border-2 border-gray-300">
-                  <HiOutlineShoppingBag className="text-2xl" />
-                </button>
               </div>
+              <button className="bg-transparent p-3 rounded-full border-2 border-gray-300 dark:border-gray-700">
+                <HiOutlineShoppingBag className="text-2xl text-gray-900 dark:text-gray-300" />
+              </button>
             </div>
           </div>
         </div>
       </div>
+    </div>
     </>
   );
 }

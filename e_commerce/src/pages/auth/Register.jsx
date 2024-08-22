@@ -43,16 +43,5 @@ export default function Register() {
     </div>
   </div>
 </section>
-
-
-    // <div>
-    //     <h1 classNameName="text-8xl">Register Page</h1>
-    //     <div classNameName="pt-10">
-    //         <span classNameName="text-xl">Sudah punya akun dek? <Link to="/auth/login" classNameName="text-blue-500 underline">login deeek!</Link></span>
-    //     </div>
-    //     <div>
-    //         <Link to={"/"} classNameName="text-blue-500 underline">Kembali ke halaman depan</Link>
-    //     </div>
-    // </div>
   )
 }
