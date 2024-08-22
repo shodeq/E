@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { IoEyeSharp } from 'react-icons/io5';
+import { TbEdit } from 'react-icons/tb';
+import { FaTrashAlt } from 'react-icons/fa';
 
 export default function DashboardProduct() {
-
-    // return (
-    //     <div>
-    //         DashboardProduct ini
-    //     </div>
-    // )
     const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);  // Add loading state
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -20,45 +17,165 @@ export default function DashboardProduct() {
             } catch (error) {
                 console.error("Error fetching products:", error);
             } finally {
-                setLoading(false);  // Stop loading after fetching is done
+                setLoading(false);
             }
         };
         fetchProducts();
     }, []);
 
-    const renderElements = () => {
-        if (products.length === 0 && !loading) {
-            return <p className="text-center text-gray-500">No products found.</p>;
+    const handleDelete = async (productId) => {
+        if (window.confirm("Are you sure you want to delete this product?")) {
+            try {
+                await fetch(`http://localhost:2207/products/${productId}?key=aldypanteq`, {
+                    method: 'DELETE',
+                });
+                setProducts(products.filter(product => product.id !== productId));
+            } catch (error) {
+                console.error("Error deleting product:", error);
+            }
         }
-
-        return products.map((product, index) => (
-            <div key={index} className="flex justify-center">
-                <div className="bg-white shadow-lg rounded-lg p-6 max-w-sm">
-                    <div className="flex flex-col gap-4">
-                        <p className="text-lg font-semibold text-gray-800">{product.name}</p>
-                        <p className="text-xl text-gray-600">${product.price}</p>
-                        <Link 
-                            to={`/product/detail/${product.id}`} 
-                            className="text-blue-500 hover:text-blue-700 font-medium"
-                        >
-                            DETAIL
-                        </Link>
-                    </div>
-                </div>
-            </div>
-        ));
     };
 
     return (
-        <div className="px-4 py-8">
-            <h1 className="text-2xl font-bold mb-6 text-center">Product</h1>
-            <div className="flex flex-wrap gap-6 justify-center">
-                {loading ? (
-                    <p className="text-center text-gray-500">Loading products...</p>
-                ) : (
-                    renderElements()
-                )}
+        <section className="bg-gray-50 dark:bg-gray-900 p-6 mt-[-3px] antialiased">
+            <div className="flex flex-col">
+                <div className="-m-1.5 overflow-x-auto">
+                    <div className="p-1.5 min-w-full inline-block align-middle">
+                        <div className="border rounded-lg divide-y divide-gray-200 dark:border-neutral-700 dark:divide-neutral-700">
+                            <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+                                <div className="flex-1 flex items-center space-x-2">
+                                    <h5>
+                                        <span className="text-gray-500 dark:text-gray-400">All Products : </span>
+                                        <span className="dark:text-white">{products.length}</span>
+                                    </h5>
+                                    <h5 className="text-gray-500 dark:text-gray-400 ml-1">1-{products.length} ({products.length})</h5>
+                                </div>
+                                <div className="flex-shrink-0 flex flex-col items-start md:flex-row md:items-center lg:justify-end space-y-3 md:space-y-0 md:space-x-3">
+                                    <button type="button" className="flex-shrink-0 inline-flex items-center justify-center py-2 px-3 text-xs font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="mr-2 w-4 h-4" aria-hidden="true">
+                                            <path fillRule="evenodd" clipRule="evenodd" d="M11.828 2.25c-.916 0-1.699.663-1.85 1.567l-.091.549a.798.798 0 01-.517.608 7.45 7.45 0 00-.478.198.798.798 0 01-.796-.064l-.453-.324a1.875 1.875 0 00-2.416.2l-.243.243a1.875 1.875 0 00-.2 2.416l.324.453a.798.798 0 01.064.796 7.448 7.448 0 00-.198.478.798.798 0 01-.608.517l-.55.092a1.875 1.875 0 00-1.566 1.849v.344c0 .916.663 1.699 1.567 1.85l.549.091c.281.047.508.25.608.517.06.162.127.321.198.478a.798.798 0 01-.064.796l-.324.453a1.875 1.875 0 00.2 2.416l.243.243c.648.648 1.67.733 2.416.2l.453-.324a.798.798 0 01.796-.064c.157.071.316.137.478.198.267.1.47.327.517.608l.092.55c.15.903.932 1.566 1.849 1.566h.344c.916 0 1.699-.663 1.85-1.567l.091-.549a.798.798 0 01.517-.608 7.52 7.52 0 00.478-.198.798.798 0 01.796.064l.453.324a1.875 1.875 0 002.416-.2l.243-.243c.648-.648.733-1.67.2-2.416l-.324-.453a.798.798 0 01-.064-.796c.071-.157.137-.316.198-.478.1-.267.327-.47.608-.517l.55-.091a1.875 1.875 0 001.566-1.85v-.344c0-.916-.663-1.699-1.567-1.85l-.549-.091a.798.798 0 01-.608-.517 7.507 7.507 0 00-.198-.478.798.798 0 01.064-.796l.324-.453a1.875 1.875 0 00-.2-2.416l-.243-.243a1.875 1.875 0 00-2.416-.2l-.453.324a.798.798 0 01-.796.064 7.462 7.462 0 00-.478-.198.798.798 0 01-.517-.608l-.091-.55a1.875 1.875 0 00-1.85-1.566h-.344zM12 6a6 6 0 100 12A6 6 0 0012 6zM6 12a6 6 0 0112 0A6 6 0 016 12z" />
+                                        </svg>
+                                        Filter
+                                    </button>
+                                    <form>
+                                        <div className="relative">
+                                            <input
+                                                type="search"
+                                                id="search"
+                                                className="block w-full py-2 px-4 text-sm text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary-500 dark:focus:ring-primary-500 focus:border-primary-500 dark:focus:border-primary-500 dark:placeholder-gray-400"
+                                                placeholder="Search"
+                                                required
+                                            />
+                                            <button
+                                                type="submit"
+                                                className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm text-gray-500 dark:text-gray-400"
+                                            >
+                                                <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 4a7 7 0 110 14 7 7 0 010-14zm0 0l-4 4m4-4l4 4" />
+                                                </svg>
+                                                <span className="sr-only">Search</span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div className="overflow-hidden">
+                                <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+                                    <thead className="bg-gray-50 dark:bg-neutral-700">
+                                        <tr>
+                                            <th scope="col" className="py-3 px-10 pe-0">
+                                                <div className="flex items-center h-5">
+                                                    <input
+                                                        id="hs-table-pagination-checkbox-all"
+                                                        type="checkbox"
+                                                        className="border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-neutral-700 dark:border-neutral-500 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+                                                    />
+                                                    <label htmlFor="hs-table-pagination-checkbox-all" className="sr-only">Checkbox</label>
+                                                </div>
+                                            </th>
+                                            <th scope="col" className="px-10 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Name</th>
+                                            <th scope="col" className="px-12 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Category</th>
+                                            <th scope="col" className="px-14 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Description</th>
+                                            <th scope="col" className="px-16 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Price</th>
+                                            <th scope="col" className="px-18 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
+                                        {loading ? (
+                                            <tr>
+                                                <td colSpan="5" className="py-3 text-center">Loading...</td>
+                                            </tr>
+                                        ) : products.length === 0 ? (
+                                            <tr>
+                                                <td colSpan="5" className="py-3 text-center text-gray-500">No products found.</td>
+                                            </tr>
+                                        ) : (
+                                            products.map((product) => (
+                                                <tr key={product.id}>
+                                                    <td className="py-3 ps-10">
+                                                        <div className="flex items-center h-5">
+                                                            <input
+                                                                id={`hs-table-pagination-checkbox-${product.id}`}
+                                                                type="checkbox"
+                                                                className="border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+                                                            />
+                                                            <label htmlFor={`hs-table-pagination-checkbox-${product.id}`} className="sr-only">Checkbox</label>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-10 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">{product.name}</td>
+                                                    <td className="px-12 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{product.category}</td>
+                                                    <td className="px-14 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{product.description}</td>
+                                                    <td className="px-16 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">${product.price}</td>
+                                                    <td className="px-18 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                        <div className="flex items-center space-x-4">
+                                                            <Link
+                                                                to={`/product/edit/${product.id}`}
+                                                                className="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 mr"
+                                                            >
+                                                                <TbEdit className="mr-1" />
+                                                                Edit
+                                                            </Link>
+                                                            <Link
+                                                                to={`/product/detail/${product.id}`}
+                                                                className="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                                            >
+                                                                <IoEyeSharp className="mr-1" />
+                                                                Preview
+                                                            </Link>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => handleDelete(product.id)}
+                                                                className="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+                                                            >
+                                                                <FaTrashAlt className="mr-1" />
+                                                                Delete
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div className="py-3 px-4 flex items-center justify-between">
+                                <nav className="inline-flex items-center -space-x-px">
+                                    <button type="button" className="p-2.5 min-w-[40px] inline-flex justify-center items-center gap-x-2 text-sm rounded-full text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" aria-label="Previous">
+                                        <span aria-hidden="true">«</span>
+                                        <span className="sr-only">Previous</span>
+                                    </button>
+                                    <button type="button" className="p-2.5 min-w-[40px] flex justify-center items-center text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 py-2.5 text-sm rounded-full disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:focus:bg-neutral-700 dark:hover:bg-neutral-700">1</button>
+                                    <button type="button" className="p-2.5 min-w-[40px] flex justify-center items-center text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 py-2.5 text-sm rounded-full disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:focus:bg-neutral-700 dark:hover:bg-neutral-700">2</button>
+                                    <button type="button" className="p-2.5 min-w-[40px] inline-flex justify-center items-center gap-x-2 text-sm rounded-full text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" aria-label="Next">
+                                        <span aria-hidden="true">»</span>
+                                        <span className="sr-only">Next</span>
+                                    </button>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
     );
 }
