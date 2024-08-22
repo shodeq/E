@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 export default function Navbar() {
     return (
 
-        <nav className="bg-gradient-to-r from-gray-100 via-white to-gray-100 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 shadow-xl rounded-xl p-4 mb-6 mx-6 border border-gray-200 dark:border-gray-700">
+        <nav className="bg-gradient-to-r from-gray-100 via-white to-gray-100 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 shadow-xl rounded-xl p-4 mx-6 mb-6 border border-gray-200 dark:border-gray-700">
+
         <div className="flex items-center justify-between">
             <Link to="/" className="block">
                 <img

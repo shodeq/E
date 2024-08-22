@@ -4,7 +4,7 @@ export default function MainLayout() {
   return (
     <div className="font-poppins  dark:bg-gray-900 pt-6">
       <Navbar />
-      <div className="">
+      <div>
         <Outlet />
       </div>
     </div>

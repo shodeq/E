@@ -1,10 +1,8 @@
-// import React from 'react';
 import { FaChartLine, FaDollarSign, FaShoppingBag, FaSmile } from 'react-icons/fa';
 
 export default function Dashboard() {
     return (
         <div className="p-6 bg-gray-100 dark:bg-gray-800 dark:text-white h-screen">
-            {/* Top Row - Revenue, Response Rate */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
                 <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-6">
                     <div className="flex justify-between items-center">
@@ -13,18 +11,15 @@ export default function Dashboard() {
                     </div>
                     <div className="mt-4">
                         <div className="h-32 bg-gray-100 rounded-lg flex items-center justify-center">
-                            {/* Placeholder for Chart */}
                             <FaChartLine className="text-blue-500" size={50} />
                         </div>
                         <div className="mt-4 text-3xl font-bold text-center">$2,900</div>
                     </div>
                 </div>
-
                 <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-6">
                     <h3 className="text-lg font-semibold">Response Rate</h3>
                     <div className="mt-4">
                         <div className="h-32 bg-gray-100 rounded-lg flex items-center justify-center">
-                            {/* Placeholder for Circular Chart */}
                             <div className="w-24 h-24 rounded-full border-8 border-blue-500 flex items-center justify-center text-2xl font-bold">
                                 65%
                             </div>
@@ -39,7 +34,6 @@ export default function Dashboard() {
                     <h3 className="text-lg font-semibold">Satisfaction Rate</h3>
                     <div className="mt-4">
                         <div className="h-32 bg-gray-100 rounded-lg flex items-center justify-center">
-                            {/* Placeholder for Line Chart */}
                             <FaSmile className="text-red-500" size={50} />
                         </div>
                         <div className="mt-4 text-3xl font-bold text-center text-red-500">96.99%</div>
@@ -47,8 +41,6 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
-
-            {/* Middle Row - Sales, Revenue, Profit */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                 <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-6">
                     <div className="flex items-center">
@@ -59,7 +51,6 @@ export default function Dashboard() {
                         </div>
                     </div>
                 </div>
-
                 <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-6">
                     <div className="flex items-center">
                         <FaDollarSign className="text-blue-500" size={40} />
@@ -69,7 +60,6 @@ export default function Dashboard() {
                         </div>
                     </div>
                 </div>
-
                 <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-6">
                     <div className="flex items-center">
                         <FaChartLine className="text-blue-500" size={40} />
@@ -80,8 +70,6 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
-
-            {/* Bottom Row - Top Selling Products */}
             <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-6">
                 <h3 className="text-lg font-semibold mb-4">Top Selling Products</h3>
                 <table className="min-w-full bg-white dark:bg-gray-800 rounded-lg">
