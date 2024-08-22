@@ -56,7 +56,7 @@ export default function Dashboard() {
                         <FaDollarSign className="text-blue-500" size={40} />
                         <div className="ml-4">
                             <h3 className="text-lg font-semibold">Total Revenue</h3>
-                            <div className="text-2xl font-bold">$12,890.570</div>
+                            <div className="text-2xl font-bold">$12,090.570</div>
                         </div>
                     </div>
                 </div>
