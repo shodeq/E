@@ -1,9 +1,28 @@
+import { useEffect, useState } from "react";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 
 export default function Home() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('http://localhost:2207/products?key=aldypanteq');
+        const result = await response.json();
+        setProducts(result.data.products);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
+
   return (
     <>
-      <div className="px-6 dark:bg-gray-800 dark:text-white ">
+      <div className="px-6 dark:bg-gray-800 dark:text-white mb-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-6 flex flex-col justify-between h-full lg:col-span-2">
             <div>
@@ -51,86 +70,36 @@ export default function Home() {
           <h1 className="text-4xl font-bold text-center mb-3">Available Products</h1>
           <p className="text-center mb-12">Lorem ipsum dolor sit amet consectetur adipisicing elit. <br /> Ad, sequi. Libero reprehenderit ab dolorum ex.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
-            <div className="rounded-2xl overflow-hidden bg-transparent">
-              <img
-                src="https://via.placeholder.com/400"
-                alt="Roadster"
-                className="w-full h-80 object-cover rounded-2xl"
-              />
-              <div className="flex justify-between items-start bg-transparent py-4">
-                <div className="flex flex-col gap-2">
-                  <h3 className="text-xl font-semibold">Roadster</h3>
-                  <p className="text-sm text-gray-500">Black Solid Round Neck</p>
-                  <div className="flex items-center gap-2 mt-[5px]">
-                    <span className="text-2xl font-semibold text-blue-500">$80</span>
-                    <span className="text-gray-500 text-sm line-through">$100</span>
+            {loading ? (
+              <div className="col-span-full text-center">Loading...</div>
+            ) : products.length === 0 ? (
+              <div className="col-span-full text-center text-gray-500">No products found.</div>
+            ) : (
+              products.map((product) => (
+                <div key={product.id} className="rounded-2xl overflow-hidden bg-transparent">
+                  <img
+                    src={product.imageUrl || "https://via.placeholder.com/400"} // Ensure product has an image URL
+                    alt={product.name}
+                    className="w-full h-80 object-cover rounded-2xl"
+                  />
+                  <div className="flex justify-between items-start bg-transparent py-4">
+                    <div className="flex flex-col gap-2">
+                      <h3 className="text-[16px] font-semibold">{product.name}</h3>
+                      <p className="text-[13px] text-gray-500">{product.category}</p>
+                      <div className="flex items-center gap-2 mt-[5px]">
+                        <span className="text-sm font-semibold text-blue-500">${product.price}</span>
+                        {product.originalPrice && (
+                          <span className="text-gray-500 text-sm line-through">${product.originalPrice}</span>
+                        )}
+                      </div>
+                    </div>
+                    <button className="bg-transparent p-3 rounded-full border-2 border-gray-300">
+                      <HiOutlineShoppingBag className="text-2xl" />
+                    </button>
                   </div>
                 </div>
-                <button className="bg-transparent p-3 rounded-full border-2 border-gray-300">
-                  <HiOutlineShoppingBag className="text-2xl" />
-                </button>
-              </div>
-            </div>
-            <div className="rounded-2xl overflow-hidden bg-transparent">
-              <img
-                src="https://via.placeholder.com/400"
-                alt="Blue Blazer"
-                className="w-full h-80 object-cover rounded-2xl"
-              />
-              <div className="flex justify-between items-start bg-transparent py-4">
-                <div className="flex flex-col gap-2">
-                  <h3 className="text-xl font-semibold">Blue Blazer</h3>
-                  <p className="text-sm text-gray-500">Men’s clothes</p>
-                  <div className="flex items-center gap-2 mt-[5px]">
-                    <span className="text-2xl font-semibold text-blue-500">$120</span>
-                    <span className="text-gray-500 text-sm line-through">$149</span>
-                  </div>
-                </div>
-                <button className="bg-transparent p-3 rounded-full border-2 border-gray-300">
-                  <HiOutlineShoppingBag className="text-2xl" />
-                </button>
-              </div>
-            </div>
-            <div className="rounded-2xl overflow-hidden bg-transparent">
-              <img
-                src="https://via.placeholder.com/400"
-                alt="Black Shirt"
-                className="w-full h-80 object-cover rounded-2xl"
-              />
-              <div className="flex justify-between items-start bg-transparent py-4">
-                <div className="flex flex-col gap-2">
-                  <h3 className="text-xl font-semibold">Black Shirt</h3>
-                  <p className="text-sm text-gray-500">Shirts</p>
-                  <div className="flex items-center gap-2 mt-[5px]">
-                    <span className="text-2xl font-semibold text-blue-500">$75</span>
-                    <span className="text-gray-500 text-sm line-through">$100</span>
-                  </div>
-                </div>
-                <button className="bg-transparent p-3 rounded-full border-2 border-gray-300">
-                  <HiOutlineShoppingBag className="text-2xl" />
-                </button>
-              </div>
-            </div>
-            <div className="rounded-2xl overflow-hidden bg-transparent">
-              <img
-                src="https://via.placeholder.com/400"
-                alt="Beige T-shirt"
-                className="w-full h-80 object-cover rounded-2xl"
-              />
-              <div className="flex justify-between items-start bg-transparent py-4">
-                <div className="flex flex-col gap-2">
-                  <h3 className="text-xl font-semibold">Beige T-shirt</h3>
-                  <p className="text-sm text-gray-500">Women’s clothes</p>
-                  <div className="flex items-center gap-2 mt-[5px]">
-                    <span className="text-2xl font-semibold text-blue-500">$50</span>
-                    <span className="text-gray-500 text-sm line-through">$75</span>
-                  </div>
-                </div>
-                <button className="bg-transparent p-3 rounded-full border-2 border-gray-300">
-                  <HiOutlineShoppingBag className="text-2xl" />
-                </button>
-              </div>
-            </div>
+              ))
+            )}
           </div>
         </div>
       </div>
