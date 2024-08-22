@@ -3,7 +3,7 @@ import Navbar from "../fragments/dashboard/Navbar";
 
 export default function DashboardLayout() {
     return (
-        <div>
+        <div className="font-poppins">
             <Navbar/>
             <div>
                 <Outlet />
