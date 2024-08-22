@@ -65,7 +65,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="min-h-screen flex justify-center items-center bg-gray-100 dark:bg-gray-900">
+      <div className="min-h-screen flex justify-center items-center dark:bg-gray-900">
   <div className="max-w-6xl mx-auto py-12">
     <h1 className="text-4xl font-bold text-center mb-3 text-gray-900 dark:text-gray-100">Available Products</h1>
     <p className="text-center mb-12 text-gray-700 dark:text-gray-300">
