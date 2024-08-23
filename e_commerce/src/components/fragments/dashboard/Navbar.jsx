@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import logo1 from "../../../../public/assets/images/Logo1.png";
 
 export default function Navbar() {
     return (
@@ -6,11 +7,9 @@ export default function Navbar() {
             <div className="flex items-center justify-between">
                 <Link to="/" className="block">
                     <img
-                        src="https://www.floatui.com/logo.svg"
-                        width={120}
-                        height={50}
+                        src={logo1}
                         alt="Float UI logo"
-                        className="transition-transform transform hover:scale-110"
+                        className="w-[13rem] transition-transform transform hover:scale-110"
                     />
                 </Link>
                 <div className="hidden md:flex space-x-8">
