@@ -8,6 +8,8 @@ import DashboardProductCreate from "./pages/admin/dashboard/DashboardProductCrea
 import AuthLayout from "./components/layouts/AuthLayout";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
+import DashboardProductDetail from "./pages/admin/dashboard/DashboardProductDetail";
+import ShoppingCart from "./pages/guest/ShoppingCart";
 
 
 
@@ -16,11 +18,15 @@ import Register from "./pages/auth/Register";
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <MainLayout/>,
+        element: <MainLayout />,
         children: [
             {
                 index: true,
                 element: <Home />,
+            },
+            {
+                path: "shopping-cart/:id",
+                element: <ShoppingCart />,
             },
         ],
     },
@@ -30,7 +36,7 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <Dashboard/>,
+                element: <Dashboard />,
             },
             {
                 path: "product",
@@ -44,19 +50,23 @@ const router = createBrowserRouter([
                 path: "update",
                 element: <DashboardProductCreate />,
             },
+            {
+                path: "detail/:id",
+                element: <DashboardProductDetail />,
+            },
         ],
     },
     {
         path: "/auth",
-        element: <AuthLayout/>,
+        element: <AuthLayout />,
         children: [
             {
                 path: "login",
-                element: <Login/>,
+                element: <Login />,
             },
             {
                 path: "register",
-                element: <Register/>,
+                element: <Register />,
             },
         ],
     },

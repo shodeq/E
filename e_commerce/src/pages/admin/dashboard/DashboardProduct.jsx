@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoEyeSharp } from 'react-icons/io5';
 import { TbEdit } from 'react-icons/tb';
 import { FaTrashAlt } from 'react-icons/fa';
+import Swal from "sweetalert2";
 
 export default function DashboardProduct() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [category, setCategory] = useState("");
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -24,22 +26,47 @@ export default function DashboardProduct() {
         fetchProducts();
     }, []);
 
-    const handleDelete = async (productId) => {
-        if (window.confirm("Are you sure you want to delete this product?")) {
-            try {
-                await fetch(`http://localhost:2207/products/${productId}?key=aldypanteq`, {
-                    method: 'DELETE',
+    const deleteHandler = async (productId) => {
+        try {
+            const result = await Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+            });
+
+            if (result.isConfirmed) {
+                const response = await fetch(
+                    `http://localhost:2207/products/${productId}?key=aldypanteq`,
+                    {
+                        method: "DELETE",
+                    }
+                );
+                if (!response.ok) {
+                    throw new Error("Failed to delete product");
+                }
+                await Swal.fire({
+                    title: "Deleted!",
+                    text: "Your product has been deleted.",
+                    icon: "success",
                 });
-                setProducts(products.filter(product => product.id !== productId));
-            } catch (error) {
-                console.error("Error deleting product:", error);
+                navigate("/dashboard/product");
             }
+        } catch (err) {
+            Swal.fire({
+                title: "Error!",
+                text: err instanceof Error ? err.message : "An error occurred",
+                icon: "error",
+            });
         }
     };
 
     return (
-        <section className="bg-gray-50 dark:bg-gray-900 p-6 mt-[-3px] antialiased">
-            <div className="flex flex-col">
+        <section className="dark:bg-gray-transparent p-6 antialiased">
+            <div className="flex flex-col dark:bg-gray-900">
                 <div className="-m-1.5 overflow-x-auto">
                     <div className="p-1.5 min-w-full inline-block align-middle">
                         <div className="border rounded-lg divide-y divide-gray-200 dark:border-neutral-700 dark:divide-neutral-700">
@@ -52,7 +79,7 @@ export default function DashboardProduct() {
                                     <h5 className="text-gray-500 dark:text-gray-400 ml-1">1-{products.length} ({products.length})</h5>
                                 </div>
                                 <div className="flex-shrink-0 flex flex-col items-start md:flex-row md:items-center lg:justify-end space-y-3 md:space-y-0 md:space-x-3">
-                                <select
+                                    <select
                                         value={category}
                                         onChange={(e) => setCategory(e.target.value)}
                                         className="flex-shrink-0 inline-flex items-center justify-center py-2 px-3 text-xs font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600"
@@ -98,11 +125,11 @@ export default function DashboardProduct() {
                                                     <label htmlFor="hs-table-pagination-checkbox-all" className="sr-only">Checkbox</label>
                                                 </div>
                                             </th>
-                                            <th scope="col" className="px-10 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Name</th>
-                                            <th scope="col" className="px-12 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Category</th>
-                                            <th scope="col" className="px-14 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Description</th>
-                                            <th scope="col" className="px-16 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Price</th>
-                                            <th scope="col" className="px-18 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Action</th>
+                                            <th scope="col" className="px-10 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-200">Name</th>
+                                            <th scope="col" className="px-12 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-200">Category</th>
+                                            <th scope="col" className="px-14 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-200">Description</th>
+                                            <th scope="col" className="px-16 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-200">Price</th>
+                                            <th scope="col" className="px-18 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-200">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
@@ -138,18 +165,18 @@ export default function DashboardProduct() {
                                                                 className="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 mr"
                                                             >
                                                                 <TbEdit className="mr-1" />
-                                                                Edit
+                                                                Update
                                                             </Link>
                                                             <Link
-                                                                to={`/product/detail/${product.id}`}
-                                                                className="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                                                to={`/dashboard/detail/${product.id}`}
+                                                                className="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                                                             >
                                                                 <IoEyeSharp className="mr-1" />
-                                                                Preview
+                                                                Detail
                                                             </Link>
                                                             <button
                                                                 type="button"
-                                                                onClick={() => handleDelete(product.id)}
+                                                                onClick={() => deleteHandler(product.id)}
                                                                 className="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
                                                             >
                                                                 <FaTrashAlt className="mr-1" />
