@@ -69,7 +69,7 @@ export default function DashboardProduct() {
             <div className="flex flex-col dark:bg-gray-900">
                 <div className="-m-1.5 overflow-x-auto">
                     <div className="p-1.5 min-w-full inline-block align-middle">
-                        <div className="border rounded-lg divide-y divide-gray-200 dark:border-neutral-700 dark:divide-neutral-700">
+                        <div className="border bg-white rounded-lg divide-y divide-gray-200 dark:border-neutral-700 dark:divide-neutral-700">
                             <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
                                 <div className="flex-1 flex items-center space-x-2">
                                     <h5>
@@ -113,7 +113,7 @@ export default function DashboardProduct() {
                             </div>
                             <div className="overflow-hidden">
                                 <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
-                                    <thead className="bg-gray-50 dark:bg-neutral-700">
+                                    <thead className="bg-gray-100 dark:bg-neutral-700">
                                         <tr>
                                             <th scope="col" className="py-3 px-10 pe-0">
                                                 <div className="flex items-center h-5">
@@ -169,7 +169,7 @@ export default function DashboardProduct() {
                                                             </Link>
                                                             <Link
                                                                 to={`/dashboard/detail/${product.id}`}
-                                                                className="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                                                className="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-gray-100 rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                                                             >
                                                                 <IoEyeSharp className="mr-1" />
                                                                 Detail

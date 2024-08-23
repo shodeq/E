@@ -89,7 +89,7 @@ export default function Home() {
               <div className="col-span-full text-center text-gray-500 dark:text-gray-500">No products found.</div>
             ) : (
               currentProducts.map((product) => (
-                <Link key={product.id} to={`/shopping-cart/${product.id}`} className="rounded-2xl overflow-hidden bg-white dark:bg-gray-800">
+                <Link key={product.id} to={`/shopping-cart/${product.id}`} className="rounded-2xl overflow-hidden dark:bg-gray-800">
                   <img
                     src={product.imageUrl || "https://via.placeholder.com/400"}
                     alt={product.name}
@@ -106,7 +106,7 @@ export default function Home() {
                         )}
                       </div>
                     </div>
-                    <button className="bg-transparent p-3 rounded-full border-2 border-gray-300 dark:border-gray-700">
+                    <button className="bg-transparent p-3 rounded-full border-2 border-gray-300 hover:border-gray-200 dark:border-gray-700 hover:bg-gray-200">
                       <HiOutlineShoppingBag className="text-xl text-gray-900 dark:text-gray-100" />
                     </button>
                   </div>

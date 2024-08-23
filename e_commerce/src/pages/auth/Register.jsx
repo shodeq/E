@@ -3,7 +3,7 @@ import logo2 from "../../../public/assets/images/Logo2.png";
 
 export default function Register() {
   return (
-    <section className="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center font-poppins">
+    <section className="bg-gray-100 dark:bg-gray-900 min-h-screen flex items-center justify-center font-poppins">
       <div className="w-full max-w-lg bg-white rounded-lg shadow-lg dark:bg-gray-800 p-8">
         <div className="flex flex-col items-center mb-3">
           <img className="w-20 h-20 mb-1" src={logo2} alt="logo" />
