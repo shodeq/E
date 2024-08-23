@@ -55,9 +55,10 @@ export default function ShoppingCart() {
     const decreaseQuantity = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
 
     return (
-        <section className="relative p-8 m-6 bg-white dark:bg-gray-900 border rounded-lg dark:border-neutral-700">
+        <div className="h-screen px-6">
+            <section className="relative p-8 bg-white dark:bg-gray-900 border rounded-lg dark:border-neutral-700">
             <nav className="text-sm mb-6 text-gray-500">
-                <button onClick={() => navigate("/")} className="flex items-center text-black hover:text-gray-400">
+                <button onClick={() => navigate("/")} className="flex items-center text-gray-400 hover:text-blue-700">
                     <RiHome6Line className="mr-1 text-lg" />
                     <Link href="/" >Home</Link>
                 </button>
@@ -67,13 +68,13 @@ export default function ShoppingCart() {
                     <img
                         src={product?.image || "https://via.placeholder.com/150"}
                         alt="Product Front"
-                        className="w-full h-[28rem] object-cover"
+                        className="w-full h-[28rem] object-cover rounded-xl"
                     />
                 </div>
 
                 <div className="lg:w-1/2 lg:ml-8">
                     <div className="flex justify-between items-start mb-2">
-                        <h1 className="text-2xl font-bold">{product?.name}</h1>
+                        <h1 className="text-2xl font-bold dark:text-neutral-200">{product?.name}</h1>
                         <button
                             onClick={() => Swal.fire({
                                 title: "Added to Wishlist",
@@ -96,14 +97,14 @@ export default function ShoppingCart() {
                         <div className="flex items-center border border-gray-400 rounded-full overflow-hidden">
                             <button
                                 onClick={decreaseQuantity}
-                                className="w-14 h-14 flex items-center justify-center text-gray-600 hover:bg-gray-100 text-xl"
+                                className="w-14 h-14 flex items-center justify-center text-gray-600 dark:text-neutral-200 dark:hover:text-black hover:bg-gray-100 text-xl"
                             >
                                 -
                             </button>
-                            <span className="w-20 h-14 flex items-center justify-center text-black border-x border-gray-400">{quantity}</span>
+                            <span className="w-20 h-14 flex items-center justify-center text-black dark:text-neutral-200 border-x border-gray-400">{quantity}</span>
                             <button
                                 onClick={increaseQuantity}
-                                className="w-14 h-14 flex items-center justify-center text-gray-600 hover:bg-gray-100 text-xl"
+                                className="w-14 h-14 flex items-center justify-center text-gray-600 dark:text-neutral-200 dark:hover:text-black hover:bg-gray-100 text-xl"
                             >
                                 +
                             </button>
@@ -129,5 +130,6 @@ export default function ShoppingCart() {
                 </div>
             </div>
         </section>
+        </div>
     );
 }

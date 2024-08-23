@@ -6,15 +6,9 @@ import { IoArrowBack } from "react-icons/io5";
 import Swal from "sweetalert2";
 
 export default function DashboardProductDetail() {
-  const [product, setProduct] = useState({
-    name: "",
-    price: 0,
-    category: "",
-    description: "",
-    image: "",
-  });
-  const { id } = useParams();
+  const [product, setProduct] = useState(null);
   const navigate = useNavigate();
+  const { id } = useParams();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -72,59 +66,62 @@ export default function DashboardProductDetail() {
     }
   };
 
-  if (!product.name) return <div>No Product Found</div>;
+  if (!product) return <div>No Product Found</div>;
 
   return (
-    <div className="p-6">
-      <div className="relative bg-white dark:bg-gray-900 border rounded-lg dark:border-neutral-700">
+    <div className="p-6 h-screen">
+      <section className="relative p-8 bg-white dark:bg-gray-900 border rounded-lg dark:border-neutral-700">
+      <nav className="text-sm mb-6 text-gray-500">
         <button
           onClick={() => navigate("/dashboard/product")}
-          className="absolute top-4 left-4 p-2 bg-gray-200 hover:bg-gray-300 rounded-full dark:bg-gray-800 dark:hover:bg-gray-700"
+          className="flex items-center text-gray-400 hover:text-blue-700"
         >
-          <IoArrowBack className="text-gray-700 dark:text-gray-300" />
+          <IoArrowBack className="mr-1 text-lg" />
+          <span>Back</span>
         </button>
-        <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
-          <h2 className="mb-2 text-xl font-semibold leading-none text-gray-900 md:text-2xl dark:text-white">
-            {product.name}
-          </h2>
-          <p className="mb-4 text-xl font-extrabold leading-none text-gray-900 md:text-2xl dark:text-white">
+      </nav>
+
+      <div className="flex flex-col lg:flex-row justify-between items-center">
+        <div className="lg:w-1/2 mb-6 lg:mb-0">
+          <img
+            src={product.image || "https://via.placeholder.com/150"}
+            alt={product.name}
+            className="w-full h-[28rem] object-cover rounded-xl"
+          />
+        </div>
+
+        <div className="lg:w-1/2 lg:ml-8">
+          <div className="flex justify-between items-start mb-2">
+            <h1 className="text-2xl font-bold dark:text-neutral-200">
+              {product.name}
+            </h1>
+          </div>
+          <p className="text-blue-600 mb-4">{product.category}</p>
+          <p className="text-sm text-gray-600 mb-6">{product.description}</p>
+          <p className="text-sm text-gray-600">Price</p>
+          <p className="text-2xl font-semibold text-blue-600 mb-6">
             ${product.price}
           </p>
-          <dl>
-            <dt className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
-              Description
-            </dt>
-            <dd className="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-              {product.description}
-            </dd>
-          </dl>
-          <dl>
-            <dt className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
-              Category
-            </dt>
-            <dd className="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-              {product.category}
-            </dd>
-          </dl>
-          <div className="flex items-center space-x-4">
+
+          <div className="flex space-x-4 mb-6">
             <button
-              type="button"
-              className="text-white inline-flex items-center bg-blue-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+              onClick={() => navigate(`/dashboard/product/edit/${id}`)}
+              className="flex-1 py-3 bg-blue-50 text-blue-600 rounded-[2.5rem] font-semibold hover:bg-blue-100 flex items-center justify-center"
             >
-              <TbEdit className="mr-1 text-lg" />
+              <TbEdit className="mr-2 text-lg" />
               Update
             </button>
             <button
-              type="button"
               onClick={deleteHandler}
-              className="inline-flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+              className="flex-1 py-3 bg-red-50 text-red-600 rounded-[2.5rem] font-semibold hover:bg-red-100 flex items-center justify-center"
             >
-              <FaTrashAlt className="mr-1 text-lg" />
+              <FaTrashAlt className="mr-2 text-lg" />
               Delete
             </button>
           </div>
         </div>
       </div>
+    </section>
     </div>
   );
 }

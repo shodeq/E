@@ -14,7 +14,7 @@ export default function Login() {
                         Please log in to access your account and <br /> continue shopping.
                     </p>
                 </div>
-                <form className="space-y-6">
+                <form className="space-y-6" action="/">
                     <div>
                         <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email Address</label>
                         <input
@@ -38,7 +38,7 @@ export default function Login() {
                         />
                     </div>
                     <a href="#" className="flex justify-end text-sm font-medium text-primary-600 hover:underline dark:text-white">Forgot password?</a>
-                    <button
+                    <button 
                         type="submit"
                         className="w-full text-white bg-blue-700 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                     >
