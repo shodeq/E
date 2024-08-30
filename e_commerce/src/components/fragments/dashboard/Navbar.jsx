@@ -17,25 +17,25 @@ export default function Navbar() {
                         <li className="text-gray-700 dark:text-gray-300">
                             <Link to="/" className="relative group">
                                 Home
-                                <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-indigo-500 dark:bg-indigo-400 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
+                                <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-500 dark:bg-blue-400 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
                             </Link>
                         </li>
                         <li className="text-gray-700 dark:text-gray-300">
                             <Link to="/dashboard" className="relative group">
                                 Dashboard
-                                <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-indigo-500 dark:bg-indigo-400 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
+                                <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-500 dark:bg-blue-400 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
                             </Link>
                         </li>
                         <li className="text-gray-700 dark:text-gray-300">
                             <Link to="/dashboard/product" className="relative group">
                                 Product
-                                <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-indigo-500 dark:bg-indigo-400 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
+                                <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-500 dark:bg-blue-400 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
                             </Link>
                         </li>
                         <li className="text-gray-700 dark:text-gray-300">
                             <Link to="/dashboard/create" className="relative group">
                                 Create
-                                <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-indigo-500 dark:bg-indigo-400 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
+                                <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-500 dark:bg-blue-400 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
                             </Link>
                         </li>
                     </ul>

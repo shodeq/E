@@ -8,15 +8,20 @@ import Swal from "sweetalert2";
 export default function DashboardProduct() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [limit] = useState(10);
+    const [totalPages, setTotalPages] = useState(1);
     const [category, setCategory] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchProducts = async () => {
+            setLoading(true);
             try {
-                const response = await fetch('http://localhost:2207/products?key=aldypanteq');
+                const response = await fetch(`http://localhost:2207/products?key=aldypanteq&limit=${limit}&page=${page}`);
                 const result = await response.json();
                 setProducts(result.data.products);
+                setTotalPages(Math.ceil(result.data.total / limit));
             } catch (error) {
                 console.error("Error fetching products:", error);
             } finally {
@@ -24,7 +29,7 @@ export default function DashboardProduct() {
             }
         };
         fetchProducts();
-    }, []);
+    }, [page, limit]);
 
     const deleteHandler = async (productId) => {
         try {
@@ -64,6 +69,12 @@ export default function DashboardProduct() {
         }
     };
 
+    const handlePageChange = (newPage) => {
+        if (newPage > 0 && newPage <= totalPages) {
+            setPage(newPage);
+        }
+    };
+
     return (
         <section className="dark:bg-gray-transparent p-6 antialiased">
             <div className="flex flex-col dark:bg-gray-900">
@@ -73,11 +84,20 @@ export default function DashboardProduct() {
                             <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
                                 <div className="flex-1 flex items-center space-x-2">
                                     <h5>
+                                        <span className="text-gray-500 dark:text-gray-400">All Products: </span>
+                                        <span className="dark:text-white">{products.length}</span>
+                                    </h5>
+                                    <h5 className="text-gray-500 dark:text-gray-400 ml-1">
+                                        Showing {(page - 1) * limit + 1} - {Math.min(page * limit, products.length)} of {products.length}
+                                    </h5>
+                                </div>
+                                {/* <div className="flex-1 flex items-center space-x-2">
+                                    <h5>
                                         <span className="text-gray-500 dark:text-gray-400">All Products : </span>
                                         <span className="dark:text-white">{products.length}</span>
                                     </h5>
                                     <h5 className="text-gray-500 dark:text-gray-400 ml-1">1-{products.length} ({products.length})</h5>
-                                </div>
+                                </div> */}
                                 <div className="flex-shrink-0 flex flex-col items-start md:flex-row md:items-center lg:justify-end space-y-3 md:space-y-0 md:space-x-3">
                                     <select
                                         value={category}
@@ -161,7 +181,7 @@ export default function DashboardProduct() {
                                                     <td className="px-18 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                         <div className="flex items-center space-x-4">
                                                             <Link
-                                                                to={`/product/edit/${product.id}`}
+                                                                to={`/dashboard/update/${product.id}`}
                                                                 className="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 mr"
                                                             >
                                                                 <TbEdit className="mr-1" />
@@ -192,18 +212,59 @@ export default function DashboardProduct() {
                             </div>
                             <div className="py-3 px-4 flex items-center justify-between">
                                 <nav className="inline-flex items-center -space-x-px">
-                                    <button type="button" className="p-2.5 min-w-[40px] inline-flex justify-center items-center gap-x-2 text-sm rounded-full text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" aria-label="Previous">
+                                    <button
+                                        type="button"
+                                        onClick={() => handlePageChange(page - 1)}
+                                        disabled={page === 1}
+                                        className="p-2.5 min-w-[40px] inline-flex justify-center items-center gap-x-2 text-sm rounded-full text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                                        aria-label="Previous"
+                                    >
                                         <span aria-hidden="true">«</span>
                                         <span className="sr-only">Previous</span>
                                     </button>
-                                    <button type="button" className="p-2.5 min-w-[40px] flex justify-center items-center text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 py-2.5 text-sm rounded-full disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:focus:bg-neutral-700 dark:hover:bg-neutral-700">1</button>
-                                    <button type="button" className="p-2.5 min-w-[40px] flex justify-center items-center text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 py-2.5 text-sm rounded-full disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:focus:bg-neutral-700 dark:hover:bg-neutral-700">2</button>
-                                    <button type="button" className="p-2.5 min-w-[40px] inline-flex justify-center items-center gap-x-2 text-sm rounded-full text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" aria-label="Next">
+                                    {Array.from({ length: totalPages }, (_, i) => (
+                                        <button
+                                            key={i}
+                                            type="button"
+                                            onClick={() => handlePageChange(i + 1)}
+                                            className={`p-2.5 min-w-[40px] flex justify-center items-center py-2.5 text-sm rounded-full ${page === i + 1
+                                                ? 'bg-blue-500 text-white dark:bg-blue-500 dark:text-white'
+                                                : 'text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-white dark:focus:bg-neutral-700 dark:hover:bg-neutral-700'
+                                                }`}
+                                        >
+                                            {i + 1}
+                                        </button>
+                                    ))}
+                                    <button
+                                        type="button"
+                                        onClick={() => handlePageChange(page + 1)}
+                                        disabled={page === totalPages}
+                                        className="p-2.5 min-w-[40px] inline-flex justify-center items-center gap-x-2 text-sm rounded-full text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                                        aria-label="Next"
+                                    >
                                         <span aria-hidden="true">»</span>
                                         <span className="sr-only">Next</span>
                                     </button>
                                 </nav>
                             </div>
+
+                            {/* <div className="p-4 flex items-center justify-between">
+                                <button
+                                    onClick={() => handlePageChange(page - 1)}
+                                    disabled={page === 1}
+                                    className="py-2 px-4 bg-gray-200 text-gray-700 rounded-md disabled:bg-gray-400"
+                                >
+                                    Previous
+                                </button>
+                                <span className="text-gray-700">Page {page} of {totalPages}</span>
+                                <button
+                                    onClick={() => handlePageChange(page + 1)}
+                                    disabled={page === totalPages}
+                                    className="py-2 px-4 bg-gray-200 text-gray-700 rounded-md disabled:bg-gray-400"
+                                >
+                                    Next
+                                </button>
+                            </div> */}
                         </div>
                     </div>
                 </div>

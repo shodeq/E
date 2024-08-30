@@ -10,6 +10,7 @@ import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import DashboardProductDetail from "./pages/admin/dashboard/DashboardProductDetail";
 import ShoppingCart from "./pages/guest/ShoppingCart";
+import DashboardProductUpdate from "./pages/admin/dashboard/DashboardProductUpdate";
 
 
 
@@ -47,8 +48,8 @@ const router = createBrowserRouter([
                 element: <DashboardProductCreate />,
             },
             {
-                path: "update",
-                element: <DashboardProductCreate />,
+                path: "update/:id",
+                element: <DashboardProductUpdate />,
             },
             {
                 path: "detail/:id",
