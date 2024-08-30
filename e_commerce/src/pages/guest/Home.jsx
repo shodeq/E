@@ -1,38 +1,47 @@
 import { useEffect, useState } from "react";
-import { HiOutlineShoppingBag } from "react-icons/hi";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Pagination from "../../components/elements/Pagination";
+import ProductCard from "../../components/elements/ProductCard";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 5;
+  const [limit] = useState(5);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setIsLoading(true);
+      setError(null);
       try {
-        const response = await fetch('http://localhost:2207/products?key=aldypanteq');
+        const response = await fetch(`http://localhost:2207/products?key=aldypanteq&limit=${limit}&page=${page}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch product");
+        }
         const result = await response.json();
+        if (!result.data) {
+          navigate(-1);
+          return;
+        }
         setProducts(result.data.products);
+        setTotalPages(Math.ceil(result.data.total / limit));
       } catch (error) {
-        console.error("Error fetching products:", error);
+        setError(error instanceof Error ? error.message : "An error occurred");
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
     fetchProducts();
-  }, []);
+  }, [navigate, limit, page]);
 
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
-
-  const totalPages = Math.ceil(products.length / productsPerPage);
-
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
-    <>
+    <div>
       <div className="px-6 dark:text-white mb-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-6 flex flex-col justify-between h-full lg:col-span-2">
@@ -76,82 +85,26 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="min-h-screen flex justify-center items-center dark:bg-gray-800">
+      <div className="min-h-screen flex flex-col items-center dark:bg-gray-800 py-12">
         <div className="max-w-[87rem] mx-auto py-12">
           <h1 className="text-4xl font-bold text-center mb-3 text-gray-900 dark:text-gray-100">Available Products</h1>
           <p className="text-center mb-12 text-gray-700 dark:text-gray-300">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. <br /> Ad, sequi. Libero reprehenderit ab dolorum ex.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-12">
-            {loading ? (
-              <div className="col-span-full text-center text-gray-700 dark:text-gray-300">Loading...</div>
-            ) : currentProducts.length === 0 ? (
-              <div className="col-span-full text-center text-gray-500 dark:text-gray-500">No products found.</div>
-            ) : (
-              currentProducts.map((product) => (
-                <Link key={product.id} to={`/shopping-cart/${product.id}`} className="rounded-2xl overflow-hidden dark:bg-gray-800">
-                  <img
-                    src={product.imageUrl || "https://via.placeholder.com/400"}
-                    alt={product.name}
-                    className="w-full h-80 object-cover rounded-2xl"
-                  />
-                  <div className="flex justify-between items-start py-4">
-                    <div className="flex flex-col gap-2">
-                      <h3 className="text-[16px] font-semibold text-gray-900 dark:text-gray-100">{product.name}</h3>
-                      <p className="text-[13px] text-gray-500 dark:text-gray-400">{product.category}</p>
-                      <div className="flex items-center gap-2 mt-[5px]">
-                        <span className="text-sm font-semibold text-blue-700">${product.price}</span>
-                        {product.originalPrice && (
-                          <span className="text-gray-500 dark:text-gray-400 text-sm line-through">${product.originalPrice}</span>
-                        )}
-                      </div>
-                    </div>
-                    <button className="bg-transparent p-3 rounded-full border-2 border-gray-300 hover:border-gray-200 dark:border-gray-700 hover:bg-gray-200">
-                      <HiOutlineShoppingBag className="text-xl text-gray-900 dark:text-gray-100" />
-                    </button>
-                  </div>
-                </Link>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-12">
+            {products.length > 0 ? (
+              products.map((product) => (
+                <ProductCard product={product} key={product.id} />
               ))
+            ) : (
+              <h1 className="text-red-500 text-xl col-span-full text-center">No Product Available</h1>
             )}
           </div>
-          <nav className="flex justify-center items-center mt-8 -space-x-px" aria-label="Pagination">
-            <button
-              type="button"
-              className="min-h-[38px] min-w-[38px] py-2 px-2.5 inline-flex justify-center items-center gap-x-1.5 text-sm first:rounded-s-lg last:rounded-e-lg border border-gray-200 text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/10"
-              aria-label="Previous"
-              onClick={() => paginate(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              <svg className="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m15 18-6-6 6-6"></path>
-              </svg>
-              <span className="sr-only">Previous</span>
-            </button>
-            {[...Array(totalPages)].map((_, index) => (
-              <button
-                key={index + 1}
-                type="button"
-                className={`min-h-[38px] min-w-[38px] flex justify-center items-center ${currentPage === index + 1 ? 'bg-gray-200 text-gray-800' : 'border border-gray-200 text-gray-800 hover:bg-gray-100'} py-2 px-3 text-sm first:rounded-s-lg last:rounded-e-lg focus:outline-none focus:bg-gray-300 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-600 dark:border-neutral-700 dark:text-white dark:focus:bg-neutral-500`}
-                onClick={() => paginate(index + 1)}
-              >
-                {index + 1}
-              </button>
-            ))}
-            <button
-              type="button"
-              className="min-h-[38px] min-w-[38px] py-2 px-2.5 inline-flex justify-center items-center gap-x-1.5 text-sm first:rounded-s-lg last:rounded-e-lg border border-gray-200 text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/10"
-              aria-label="Next"
-              onClick={() => paginate(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              <span className="sr-only">Next</span>
-              <svg className="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m9 18 6-6-6-6"></path>
-              </svg>
-            </button>
-          </nav>
+          <div className="mt-6">
+            <Pagination page={page} setPage={setPage} totalPages={totalPages} />
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
