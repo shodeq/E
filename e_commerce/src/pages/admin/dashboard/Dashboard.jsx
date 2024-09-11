@@ -46,7 +46,6 @@ export default function Dashboard() {
         { id: 1, name: "John Doe", email: "john@example.com", registrationDate: "2024-07-15", status: "Active", totalPurchases: "$3,500" },
         { id: 2, name: "Jane Smith", email: "jane@example.com", registrationDate: "2024-08-01", status: "Inactive", totalPurchases: "$1,200" },
         { id: 3, name: "Michael Johnson", email: "michael@example.com", registrationDate: "2024-06-22", status: "Active", totalPurchases: "$4,800" },
-        // Add more users as needed
     ];
 
     return (
