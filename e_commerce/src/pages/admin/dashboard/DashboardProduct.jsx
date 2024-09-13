@@ -1,73 +1,19 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { IoEyeSharp } from 'react-icons/io5';
 import { TbEdit } from 'react-icons/tb';
 import { FaTrashAlt } from 'react-icons/fa';
-import Swal from "sweetalert2";
+import { useDeleteProduct } from "../../../features/product/useDeleteProduct";
+import { useProducts } from "../../../features/product/useProduct";
 
 export default function DashboardProduct() {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
-    const [limit] = useState(10);
-    const [totalPages, setTotalPages] = useState(1);
+    const limit = 10; 
     const [category, setCategory] = useState("");
-    const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            setLoading(true);
-            try {
-                const response = await fetch(`http://localhost:2207/products?key=aldypanteq&limit=${limit}&page=${page}`);
-                const result = await response.json();
-                setProducts(result.data.products);
-                setTotalPages(Math.ceil(result.data.total / limit));
-            } catch (error) {
-                console.error("Error fetching products:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchProducts();
-    }, [page, limit]);
+    const { data: products, isLoading, error, totalPages } = useProducts(limit, page);
 
-    const deleteHandler = async (productId) => {
-        try {
-            const result = await Swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!",
-            });
-
-            if (result.isConfirmed) {
-                const response = await fetch(
-                    `http://localhost:2207/products/${productId}?key=aldypanteq`,
-                    {
-                        method: "DELETE",
-                    }
-                );
-                if (!response.ok) {
-                    throw new Error("Failed to delete product");
-                }
-                await Swal.fire({
-                    title: "Deleted!",
-                    text: "Your product has been deleted.",
-                    icon: "success",
-                });
-                navigate("/dashboard/product");
-            }
-        } catch (err) {
-            Swal.fire({
-                title: "Error!",
-                text: err instanceof Error ? err.message : "An error occurred",
-                icon: "error",
-            });
-        }
-    };
+    const { deleteProduct } = useDeleteProduct();
 
     const handlePageChange = (newPage) => {
         if (newPage > 0 && newPage <= totalPages) {
@@ -91,13 +37,6 @@ export default function DashboardProduct() {
                                         Showing {(page - 1) * limit + 1} - {Math.min(page * limit, products.length)} of {products.length}
                                     </h5>
                                 </div>
-                                {/* <div className="flex-1 flex items-center space-x-2">
-                                    <h5>
-                                        <span className="text-gray-500 dark:text-gray-400">All Products : </span>
-                                        <span className="dark:text-white">{products.length}</span>
-                                    </h5>
-                                    <h5 className="text-gray-500 dark:text-gray-400 ml-1">1-{products.length} ({products.length})</h5>
-                                </div> */}
                                 <div className="flex-shrink-0 flex flex-col items-start md:flex-row md:items-center lg:justify-end space-y-3 md:space-y-0 md:space-x-3">
                                     <select
                                         value={category}
@@ -153,9 +92,13 @@ export default function DashboardProduct() {
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
-                                        {loading ? (
+                                        {isLoading ? (
                                             <tr>
                                                 <td colSpan="5" className="py-3 text-center">Loading...</td>
+                                            </tr>
+                                        ) : error ? (
+                                            <tr>
+                                                <td colSpan="5" className="py-3 text-center text-red-500">Error: {error}</td>
                                             </tr>
                                         ) : products.length === 0 ? (
                                             <tr>
@@ -196,7 +139,7 @@ export default function DashboardProduct() {
                                                             </Link>
                                                             <button
                                                                 type="button"
-                                                                onClick={() => deleteHandler(product.id)}
+                                                                onClick={() => deleteProduct(product.id)}
                                                                 className="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
                                                             >
                                                                 <FaTrashAlt className="mr-1" />
@@ -247,24 +190,6 @@ export default function DashboardProduct() {
                                     </button>
                                 </nav>
                             </div>
-
-                            {/* <div className="p-4 flex items-center justify-between">
-                                <button
-                                    onClick={() => handlePageChange(page - 1)}
-                                    disabled={page === 1}
-                                    className="py-2 px-4 bg-gray-200 text-gray-700 rounded-md disabled:bg-gray-400"
-                                >
-                                    Previous
-                                </button>
-                                <span className="text-gray-700">Page {page} of {totalPages}</span>
-                                <button
-                                    onClick={() => handlePageChange(page + 1)}
-                                    disabled={page === totalPages}
-                                    className="py-2 px-4 bg-gray-200 text-gray-700 rounded-md disabled:bg-gray-400"
-                                >
-                                    Next
-                                </button>
-                            </div> */}
                         </div>
                     </div>
                 </div>

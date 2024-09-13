@@ -1,41 +1,62 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { useProductId } from "../../../features/product/useProductId";
 import { useUpdateProduct } from "../../../features/product/useUpdateProduct";
 
 export default function DashboardProductUpdate() {
     const { id } = useParams();
-    const { product } = useProductId(id);
+    const { data: product } = useProductId(id);
     const { updateProduct, message } = useUpdateProduct();
     const navigate = useNavigate();
-    const [updateProductData, setUpdateProductData] = useState({
-        name: "",
-        price: "",
-        category: "",
-        description: "",
-        image: "",
+
+    const updateProductSchema = Yup.object().shape({
+        name: Yup.string()
+            .min(3, "Minimal 3 Karakter")
+            .max(16, "Maksimal 16 Karakter")
+            .required("Required"),
+        price: Yup.string()
+            .min(0, "Price must be greater than or equal to 0")
+            .required("Required"),
+        category: Yup.string()
+            .optional(),
+        description: Yup.string()
+            .min(3, "Minimal 3 Karakter")
+            .max(35, "Maksimal 35 Karakter")
+            .required("Required"),
+        image: Yup.string()
+            .url("Invalid URL")
+            .required("Required"),
+    });
+
+    const formik = useFormik({
+        initialValues: {
+            name: "",
+            price: "",
+            category: "",
+            description: "",
+            image: "",
+        },
+        validationSchema: updateProductSchema,
+        onSubmit: (values) => {
+            updateProduct(values, id); 
+            navigate("/dashboard/product");  
+        },
     });
 
     useEffect(() => {
         if (product) {
-            setUpdateProductData(product);
+            formik.setValues({
+                name: product.name,
+                price: product.price,
+                category: product.category,
+                description: product.description,
+                image: product.image,
+            });
         }
-    }, [product]);
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setUpdateProductData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
-
-    const submitHandler = async (e) => {
-        e.preventDefault();
-        await updateProduct(updateProductData);
-        navigate("/dashboard/product");
-    };
+    }, [id, product]);
 
     return (
         <div className="p-6">
@@ -46,42 +67,48 @@ export default function DashboardProductUpdate() {
                     </h3>
                 </div>
                 {message && <p className="mb-6">{message}</p>}
-                <form onSubmit={submitHandler}>
+                <form onSubmit={formik.handleSubmit}>
                     <div className="flex flex-col gap-4 mb-4">
                         <div>
                             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
                             <input
                                 type="text"
                                 name="name"
-                                id="name"
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 placeholder="Type product name"
-                                onChange={handleChange}
-                                value={updateProductData.name}
+                                value={formik.values.name}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
                             />
+                            {formik.touched.name && formik.errors.name ? (
+                                <div className="text-red-500">{formik.errors.name}</div>
+                            ) : null}
                         </div>
                         <div>
                             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
                             <input
                                 type="text"
                                 name="price"
-                                id="price"
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="$2999"
-                                onChange={handleChange}
-                                value={updateProductData.price}
+                                placeholder="2999"
+                                value={formik.values.price}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
                             />
+                            {formik.touched.price && formik.errors.price ? (
+                                <div className="text-red-500">{formik.errors.price}</div>
+                            ) : null}
                         </div>
                         <div>
                             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
                             <input
                                 type="text"
                                 name="category"
-                                id="category"
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 placeholder="Type category"
-                                onChange={handleChange}
-                                value={updateProductData.category}
+                                value={formik.values.category}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
                             />
                         </div>
                         <div>
@@ -89,24 +116,30 @@ export default function DashboardProductUpdate() {
                             <input
                                 type="text"
                                 name="description"
-                                id="description"
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 placeholder="Write description here"
-                                onChange={handleChange}
-                                value={updateProductData.description}
+                                value={formik.values.description}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
                             />
+                            {formik.touched.description && formik.errors.description ? (
+                                <div className="text-red-500">{formik.errors.description}</div>
+                            ) : null}
                         </div>
                         <div>
                             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Image</label>
                             <input
                                 type="text"
                                 name="image"
-                                id="image"
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 placeholder="Image URL"
-                                onChange={handleChange}
-                                value={updateProductData.image}
+                                value={formik.values.image}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
                             />
+                            {formik.touched.image && formik.errors.image ? (
+                                <div className="text-red-500">{formik.errors.image}</div>
+                            ) : null}
                         </div>
                     </div>
                     <button

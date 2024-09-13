@@ -1,52 +1,56 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
+import axiosInstance from "../../libs/axios/Index";
 
 export const useCreateProduct = () => {
-    const [product, setProduct] = useState();
-    const [message, setMessage] = useState("");
-    const [pending, setPending] = useState(true);
-    const [error, setError] = useState(null);
-    const [status, setStatus] = useState("");
+  const [state, setState] = useState({
+    data: null,
+    message: "",
+    pending: true,
+    error: null,
+    status: "",
+  });
 
-    const createProduct = async (data) => {
-        try {
-            const response = await fetch("http://localhost:2207/products?key=aldypanteq", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    ...data,
-                    price: Number(data.price),
-                }),
-            });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const result = await response.json();
-            setProduct(result.data);
-            setStatus(result.status);
-            setMessage(result.message);
-            Swal.fire({
-                title: "Success!",
-                text: "Product has been created successfully.",
-                icon: "success",
-                confirmButtonText: "OK",
-            });
-        } catch (err) {
-            setError(err instanceof Error ? err : new Error('Failed to create product'));
-            setMessage("Failed to create product");
+  const createProduct = async (data) => {
+    setState((prev) => ({ ...prev, pending: true, error: null }));
 
-            Swal.fire({
-                title: "Error!",
-                text: "Failed to create product.",
-                icon: "error",
-                confirmButtonText: "OK",
-            });
-        } finally {
-            setPending(false);
-        }
-    };
+    try {
+      const response = await axiosInstance.post("/products", data)
+      setState({
+        data: response.data.data,
+        message: response.data.message,
+        pending: false, 
+        error: null,
+        status: response.data.status,
+      });
 
-    return { createProduct, product, pending, error, message, status };
-}
+      Swal.fire({
+        title: "Success!",
+        text: "Product has been created successfully.",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+    } catch (err) {
+      setState((prev) => ({
+        ...prev,
+        error: err instanceof Error ? err : new Error("Failed to create product"),
+        message: "Failed to create product",
+      }));
+
+      Swal.fire({
+        title: "Error!",
+        text: "Failed to create product.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    } finally {
+      setState((prev) => ({
+        ...prev,
+        pending: false,
+      }));
+    }
+  };
+
+  return { ...state, createProduct };
+};
+

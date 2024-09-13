@@ -1,29 +1,35 @@
 import { useEffect, useState } from "react";
+import axiosInstance from "../../libs/axios/Index";
 
 export const useProductId = (id) => {
-    const [product, setProduct] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState();
+    const [state, setState] = useState({
+        data: null,
+        loading: false,
+        error: null,
+        message: '',
+        status: '',
+    });
 
     useEffect(() => {
         const fetchProduct = async () => {
-          try {
-            const response = await fetch(
-              `http://localhost:2207/products/${id}?key=aldypanteq`
-            );
-            if (!response.ok) {
-              throw new Error("Failed to fetch product");
-            }
-            const result = await response.json();
-            setProduct(result.data);
-          } catch (err) {
-            setError(err);
-          } finally {
-            setLoading(false);
-          }
-        };
-        fetchProduct();
-      }, [id]);
-
-    return { product, loading, error };
+            try {
+              const response = await axiosInstance.get(`/products/${id}`);
+              setState({
+                data: response.data.data,
+                loading: false,
+                error: null,
+                message: response.data.message,
+                status: response.data.status
+              })
+            } catch (err) {
+              setState(prev => ({
+                ...prev, 
+                loading: false, 
+                error: err instanceof Error ? err : new Error('An error occurred while fetching the product'),
+              }));
+            } 
+          };
+          fetchProduct();
+    }, [id]);
+    return state;
 }

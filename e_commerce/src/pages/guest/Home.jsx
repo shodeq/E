@@ -1,41 +1,13 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import Pagination from "../../components/elements/Pagination";
 import ProductCard from "../../components/elements/ProductCard";
+import { useProducts } from "../../features/product/useProduct";
 
 export default function Home() {
-  const [products, setProducts] = useState([]);
   const [limit] = useState(5);
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const response = await fetch(`http://localhost:2207/products?key=aldypanteq&limit=${limit}&page=${page}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch product");
-        }
-        const result = await response.json();
-        if (!result.data) {
-          navigate(-1);
-          return;
-        }
-        setProducts(result.data.products);
-        setTotalPages(Math.ceil(result.data.total / limit));
-      } catch (error) {
-        setError(error instanceof Error ? error.message : "An error occurred");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchProducts();
-  }, [navigate, limit, page]);
+  const { data: products, isLoading, error, totalPages } = useProducts(limit, page);
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;

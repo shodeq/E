@@ -1,51 +1,51 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
+import axiosInstance from "../../libs/axios/Index";
 
 export const useUpdateProduct = () => {
-    const [product, setProduct] = useState({ name: "", description: "", category: "", image: "", price: "" });
-    const [pending, setPending] = useState(true);
-    const [error, setError] = useState(null);
-    const [message, setMessage] = useState("");
-    const [status, setStatus] = useState("");
+  const [state, setState] = useState({
+    product: { name: "", description: "", category: "", image: "", price: "" },
+    pending: false,
+    error: null,
+    message: "",
+    status: "",
+  });
 
-    const updateProduct = async (data) => {
-        try {
-            const response = await fetch(`http://localhost:2207/products/${data.id}?key=aldypanteq`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    ...data,
-                    price: Number(data.price),
-                }),
-            });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const result = await response.json();
-            setProduct(result.data);
-            setStatus(result.status);
-            setMessage(result.message);
-            Swal.fire({
-                title: "Success!",
-                text: "Product has been updated successfully.",
-                icon: "success",
-                confirmButtonText: "OK",
-            });
-        } catch (err) {
-            setError(err instanceof Error ? err : new Error('Failed to update product'));
-            setMessage("Failed to update product");
-            Swal.fire({
-                title: "Error!",
-                text: "Failed to update product.",
-                icon: "error",
-                confirmButtonText: "OK",
-            });
-        } finally {
-            setPending(false);
-        }
-    };
+  const updateProduct = async (data, id) => {
+    setState(prev => ({ ...prev, pending: true, error: null }));
 
-    return { updateProduct, product, pending, error, message, status };
-}
+    try {
+      const response = await axiosInstance.put(`/products/${id}`, data)
+      setState({
+        data: response.data.data,
+        message: response.data.message,
+        pending: false, 
+        error: null,
+        status: response.data.status,
+      });
+
+      Swal.fire({
+        title: "Success!",
+        text: "Product has been updated successfully.",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+    } catch (err) {
+      setState(prev => ({
+        ...prev,
+        pending: false,
+        error: err instanceof Error ? err : new Error("Failed to update product"),
+        message: "Failed to update product",
+      }));
+
+      Swal.fire({
+        title: "Error!",
+        text: "Failed to update product.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+  };
+
+  return { ...state, updateProduct };
+};
