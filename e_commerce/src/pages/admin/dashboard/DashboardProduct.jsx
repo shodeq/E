@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { IoEyeSharp } from 'react-icons/io5';
 import { TbEdit } from 'react-icons/tb';
 import { FaTrashAlt } from 'react-icons/fa';
-import Swal from "sweetalert2";
+import { useDeleteProduct } from "../../../features/product/useDeleteProduct";
+import axiosInstance from "../../../libs/axios/Index";
 
 export default function DashboardProduct() {
     const [products, setProducts] = useState([]);
@@ -12,14 +13,15 @@ export default function DashboardProduct() {
     const [limit] = useState(10);
     const [totalPages, setTotalPages] = useState(1);
     const [category, setCategory] = useState("");
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchProducts = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`http://localhost:2207/products?key=aldypanteq&limit=${limit}&page=${page}`);
-                const result = await response.json();
+                const response = await axiosInstance.get(`/products`, {
+                    params: { limit, page },
+                });                
+                const result = response.data;
                 setProducts(result.data.products);
                 setTotalPages(Math.ceil(result.data.total / limit));
             } catch (error) {
@@ -31,43 +33,7 @@ export default function DashboardProduct() {
         fetchProducts();
     }, [page, limit]);
 
-    const deleteHandler = async (productId) => {
-        try {
-            const result = await Swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!",
-            });
-
-            if (result.isConfirmed) {
-                const response = await fetch(
-                    `http://localhost:2207/products/${productId}?key=aldypanteq`,
-                    {
-                        method: "DELETE",
-                    }
-                );
-                if (!response.ok) {
-                    throw new Error("Failed to delete product");
-                }
-                await Swal.fire({
-                    title: "Deleted!",
-                    text: "Your product has been deleted.",
-                    icon: "success",
-                });
-                navigate("/dashboard/product");
-            }
-        } catch (err) {
-            Swal.fire({
-                title: "Error!",
-                text: err instanceof Error ? err.message : "An error occurred",
-                icon: "error",
-            });
-        }
-    };
+    const { deleteProduct } = useDeleteProduct()
 
     const handlePageChange = (newPage) => {
         if (newPage > 0 && newPage <= totalPages) {
@@ -196,7 +162,7 @@ export default function DashboardProduct() {
                                                             </Link>
                                                             <button
                                                                 type="button"
-                                                                onClick={() => deleteHandler(product.id)}
+                                                                onClick={() => deleteProduct(product.id)}
                                                                 className="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
                                                             >
                                                                 <FaTrashAlt className="mr-1" />

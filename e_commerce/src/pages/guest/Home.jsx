@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../../components/elements/Pagination";
 import ProductCard from "../../components/elements/ProductCard";
+import axiosInstance from "../../libs/axios/Index";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -17,11 +18,10 @@ export default function Home() {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch(`http://localhost:2207/products?key=aldypanteq&limit=${limit}&page=${page}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch product");
-        }
-        const result = await response.json();
+        const response = await axiosInstance.get(`/products`, {
+          params: { limit, page },
+        });
+        const result = response.data;
         if (!result.data) {
           navigate(-1);
           return;
