@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useProductId } from "../../../features/product/useProductId";
 import { useUpdateProduct } from "../../../features/product/useUpdateProduct";
+import InputGroup from "../../../components/fragments/dashboard/InputGroup";
 
 export default function DashboardProductUpdate() {
     const { id } = useParams();
@@ -70,73 +71,28 @@ export default function DashboardProductUpdate() {
                 <form onSubmit={formik.handleSubmit}>
                     <div className="flex flex-col gap-4 mb-4">
                         <div>
-                            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                            <input
-                                type="text"
-                                name="name"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Type product name"
-                                value={formik.values.name}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                            />
+                            <InputGroup label="Name" name="name" type="text" value={formik.values.name} onChange={formik.handleChange}/>
                             {formik.touched.name && formik.errors.name ? (
                                 <div className="text-red-500">{formik.errors.name}</div>
                             ) : null}
                         </div>
                         <div>
-                            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                            <input
-                                type="text"
-                                name="price"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="2999"
-                                value={formik.values.price}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                            />
-                            {formik.touched.price && formik.errors.price ? (
+                            <InputGroup label="Price" name="price" type="number" value={formik.values.price} onChange={formik.handleChange}/>
+                            {formik.touched.price && formik.errors.price ? ( 
                                 <div className="text-red-500">{formik.errors.price}</div>
                             ) : null}
                         </div>
                         <div>
-                            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-                            <input
-                                type="text"
-                                name="category"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Type category"
-                                value={formik.values.category}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                            />
+                            <InputGroup label="Category" name="category" type="text" value={formik.values.category} onChange={formik.handleChange}/>
                         </div>
                         <div>
-                            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                            <input
-                                type="text"
-                                name="description"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Write description here"
-                                value={formik.values.description}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                            />
+                            <InputGroup label="Description" name="description" type="text" value={formik.values.description} onChange={formik.handleChange}/>
                             {formik.touched.description && formik.errors.description ? (
                                 <div className="text-red-500">{formik.errors.description}</div>
                             ) : null}
                         </div>
                         <div>
-                            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Image</label>
-                            <input
-                                type="text"
-                                name="image"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Image URL"
-                                value={formik.values.image}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                            />
+                            <InputGroup label="Image" name="image" type="text" value={formik.values.image} onChange={formik.handleChange}/>
                             {formik.touched.image && formik.errors.image ? (
                                 <div className="text-red-500">{formik.errors.image}</div>
                             ) : null}

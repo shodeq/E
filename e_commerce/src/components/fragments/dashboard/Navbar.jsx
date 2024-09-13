@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import logo1 from "../../../../public/assets/images/Logo1.png";
+import NavLink from "../../elements/NavLink";
 
 export default function Navbar() {
     return (
@@ -15,28 +16,18 @@ export default function Navbar() {
                 <div className="hidden md:flex space-x-8">
                     <ul className="flex items-center space-x-8">
                         <li className="text-gray-700 dark:text-gray-300">
-                            <Link to="/" className="relative group">
-                                Home
-                                <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-500 dark:bg-blue-400 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
-                            </Link>
+                            <NavLink href={"/"}>Home</NavLink>
                         </li>
                         <li className="text-gray-700 dark:text-gray-300">
-                            <Link to="/dashboard" className="relative group">
-                                Dashboard
-                                <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-500 dark:bg-blue-400 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
-                            </Link>
+                            <NavLink href={"/dashboard"}> Dashboard</NavLink>
+                            
                         </li>
                         <li className="text-gray-700 dark:text-gray-300">
-                            <Link to="/dashboard/product" className="relative group">
-                                Product
-                                <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-500 dark:bg-blue-400 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
-                            </Link>
+                            <NavLink href={"/dashboard/product"}>Product</NavLink>
+                
                         </li>
                         <li className="text-gray-700 dark:text-gray-300">
-                            <Link to="/dashboard/create" className="relative group">
-                                Create
-                                <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-500 dark:bg-blue-400 transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
-                            </Link>
+                            <NavLink href={"/dashboard/create"}>Create</NavLink>
                         </li>
                     </ul>
                 </div>
