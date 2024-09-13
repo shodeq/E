@@ -35,7 +35,7 @@ export default function DashboardProductCreate() {
     },
     validationSchema: ProductSchema,
     onSubmit: (values, { resetForm }) => {
-      createProduct(values);
+      createProduct({...values, price: Number(values.price)});
       resetForm();
       navigate("/dashboard/product");
     },

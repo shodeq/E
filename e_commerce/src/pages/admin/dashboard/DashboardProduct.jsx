@@ -1,39 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { IoEyeSharp } from 'react-icons/io5';
 import { TbEdit } from 'react-icons/tb';
 import { FaTrashAlt } from 'react-icons/fa';
 import { useDeleteProduct } from "../../../features/product/useDeleteProduct";
-import axiosInstance from "../../../libs/axios/Index";
+import { useProducts } from "../../../features/product/useProduct";
 
 export default function DashboardProduct() {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
-    const [limit] = useState(10);
-    const [totalPages, setTotalPages] = useState(1);
+    const limit = 10; 
     const [category, setCategory] = useState("");
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            setLoading(true);
-            try {
-                const response = await axiosInstance.get(`/products`, {
-                    params: { limit, page },
-                });                
-                const result = response.data;
-                setProducts(result.data.products);
-                setTotalPages(Math.ceil(result.data.total / limit));
-            } catch (error) {
-                console.error("Error fetching products:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchProducts();
-    }, [page, limit]);
+    const { data: products, isLoading, error, totalPages } = useProducts(limit, page);
 
-    const { deleteProduct } = useDeleteProduct()
+    const { deleteProduct } = useDeleteProduct();
 
     const handlePageChange = (newPage) => {
         if (newPage > 0 && newPage <= totalPages) {
@@ -57,13 +37,6 @@ export default function DashboardProduct() {
                                         Showing {(page - 1) * limit + 1} - {Math.min(page * limit, products.length)} of {products.length}
                                     </h5>
                                 </div>
-                                {/* <div className="flex-1 flex items-center space-x-2">
-                                    <h5>
-                                        <span className="text-gray-500 dark:text-gray-400">All Products : </span>
-                                        <span className="dark:text-white">{products.length}</span>
-                                    </h5>
-                                    <h5 className="text-gray-500 dark:text-gray-400 ml-1">1-{products.length} ({products.length})</h5>
-                                </div> */}
                                 <div className="flex-shrink-0 flex flex-col items-start md:flex-row md:items-center lg:justify-end space-y-3 md:space-y-0 md:space-x-3">
                                     <select
                                         value={category}
@@ -119,9 +92,13 @@ export default function DashboardProduct() {
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
-                                        {loading ? (
+                                        {isLoading ? (
                                             <tr>
                                                 <td colSpan="5" className="py-3 text-center">Loading...</td>
+                                            </tr>
+                                        ) : error ? (
+                                            <tr>
+                                                <td colSpan="5" className="py-3 text-center text-red-500">Error: {error}</td>
                                             </tr>
                                         ) : products.length === 0 ? (
                                             <tr>
@@ -213,24 +190,6 @@ export default function DashboardProduct() {
                                     </button>
                                 </nav>
                             </div>
-
-                            {/* <div className="p-4 flex items-center justify-between">
-                                <button
-                                    onClick={() => handlePageChange(page - 1)}
-                                    disabled={page === 1}
-                                    className="py-2 px-4 bg-gray-200 text-gray-700 rounded-md disabled:bg-gray-400"
-                                >
-                                    Previous
-                                </button>
-                                <span className="text-gray-700">Page {page} of {totalPages}</span>
-                                <button
-                                    onClick={() => handlePageChange(page + 1)}
-                                    disabled={page === totalPages}
-                                    className="py-2 px-4 bg-gray-200 text-gray-700 rounded-md disabled:bg-gray-400"
-                                >
-                                    Next
-                                </button>
-                            </div> */}
                         </div>
                     </div>
                 </div>

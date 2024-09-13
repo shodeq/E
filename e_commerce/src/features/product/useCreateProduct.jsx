@@ -15,10 +15,7 @@ export const useCreateProduct = () => {
     setState((prev) => ({ ...prev, pending: true, error: null }));
 
     try {
-      const response = await axiosInstance.post("/products", {
-        ...data,
-        price: Number(data.price),
-      });
+      const response = await axiosInstance.post("/products", data)
       setState({
         data: response.data.data,
         message: response.data.message,

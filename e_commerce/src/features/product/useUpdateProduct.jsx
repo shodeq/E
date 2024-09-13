@@ -15,10 +15,7 @@ export const useUpdateProduct = () => {
     setState(prev => ({ ...prev, pending: true, error: null }));
 
     try {
-      const response = await axiosInstance.put(`/products/${id}`, {
-        ...data,
-        price: Number(data.price),
-      });
+      const response = await axiosInstance.put(`/products/${id}`, data)
       setState({
         data: response.data.data,
         message: response.data.message,
