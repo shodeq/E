@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axiosInstance from "../../libs/axios/Index";
+import axiosInstance from "../../libs/axios";
 
 export const useProductId = (id) => {
     const [state, setState] = useState({

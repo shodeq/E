@@ -1,13 +1,12 @@
-// components/elements/SweetAlert.js
 import Swal from "sweetalert2";
 
 export const showAlert = async ({
   title = "",
   message = "",
-  icon = "success", // Bisa "success", "error", "warning" (untuk konfirmasi)
+  icon = "success",
   confirmButtonText = "OK",
-  showCancelButton = false, // Tampilkan tombol batal hanya untuk konfirmasi
-  cancelButtonText = "Cancel", // Untuk konfirmasi
+  showCancelButton = false, 
+  cancelButtonText = "Cancel", 
 }) => {
   const result = await Swal.fire({
     title,
@@ -20,5 +19,5 @@ export const showAlert = async ({
     cancelButtonColor: "#d33",
   });
 
-  return result; // Untuk konfirmasi, kita perlu hasilnya (isConfirmed atau tidak)
+  return result; 
 };

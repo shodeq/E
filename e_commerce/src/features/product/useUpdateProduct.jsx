@@ -25,7 +25,6 @@ export const useUpdateProduct = () => {
         status: response.data.status,
       });
 
-      // Menampilkan notifikasi sukses
       await showAlert({
         title: "Berhasil!",
         message: "Produk berhasil diperbarui.",
@@ -39,7 +38,6 @@ export const useUpdateProduct = () => {
         message: "Gagal memperbarui produk",
       }));
 
-      // Menampilkan notifikasi error
       await showAlert({
         title: "Gagal!",
         message: "Gagal memperbarui produk.",

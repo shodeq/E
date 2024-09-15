@@ -25,7 +25,6 @@ export const useCreateProduct = () => {
         status: response.data.status,
       });
 
-      // Menampilkan notifikasi sukses
       await showAlert({
         title: "Berhasil!",
         message: "Produk berhasil dibuat.",
@@ -38,7 +37,6 @@ export const useCreateProduct = () => {
         message: "Gagal membuat produk",
       }));
 
-      // Menampilkan notifikasi error
       await showAlert({
         title: "Gagal!",
         message: "Gagal membuat produk.",
