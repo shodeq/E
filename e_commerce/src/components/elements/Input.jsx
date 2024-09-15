@@ -1,7 +1,8 @@
-
-export default function Input({ id, name, className, ...props }) {
+/* eslint-disable react/prop-types */
+export default function Input({ id, name, className,placeholder, ...props }) {
     return (
         <input
+            placeholder={placeholder}
             type="text"
             id={id}
             name={name}

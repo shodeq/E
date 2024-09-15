@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import { useProductId } from "../../../features/product/useProductId";
 import { useUpdateProduct } from "../../../features/product/useUpdateProduct";
 import InputGroup from "../../../components/fragments/dashboard/InputGroup";
+import ButtonForm from "../../../components/elements/ButtonForm";
 
 export default function DashboardProductUpdate() {
     const { id } = useParams();
@@ -98,12 +99,13 @@ export default function DashboardProductUpdate() {
                             ) : null}
                         </div>
                     </div>
-                    <button
+                    <ButtonForm type="submit"><FaEdit className="mr-2" /> Update Product</ButtonForm>
+                    {/* <button
                         type="submit"
                         className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 border border-transparent hover:border hover:border-blue-600 hover:text-blue-600 hover:bg-transparent"
                     >
                         <FaEdit className="mr-2" /> Update Product
-                    </button>
+                    </button> */}
                 </form>
             </div>
         </div>

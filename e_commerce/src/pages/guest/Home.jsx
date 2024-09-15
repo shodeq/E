@@ -2,6 +2,7 @@ import { useState } from "react";
 import Pagination from "../../components/elements/Pagination";
 import ProductCard from "../../components/elements/ProductCard";
 import { useProducts } from "../../features/product/useProduct";
+import Hero from "../../components/elements/Hero";
 
 export default function Home() {
   const [limit] = useState(5);
@@ -14,7 +15,8 @@ export default function Home() {
 
   return (
     <div>
-      <div className="px-6 dark:text-white mb-8">
+      <Hero/>
+      {/* <div className="px-6 dark:text-white mb-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-6 flex flex-col justify-between h-full lg:col-span-2">
             <div>
@@ -56,7 +58,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="min-h-screen flex flex-col items-center dark:bg-gray-800 py-12">
         <div className="max-w-[87rem] mx-auto py-12">
           <h1 className="text-4xl font-bold text-center mb-3 text-gray-900 dark:text-gray-100">Available Products</h1>

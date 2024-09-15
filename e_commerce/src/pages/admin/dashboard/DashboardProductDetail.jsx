@@ -61,7 +61,7 @@ export default function DashboardProductDetail() {
               </button>
 
               <button
-                onClick={deleteProduct}
+                onClick={() => deleteProduct(id)}
                 className="flex-1 py-3 bg-red-50 text-red-600 rounded-[2.5rem] font-semibold hover:bg-red-100 flex items-center justify-center"
               >
                 <FaTrashAlt className="mr-2 text-lg" />
