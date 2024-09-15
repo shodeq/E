@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Swal from "sweetalert2";
-import axiosInstance from "../../libs/axios/Index";
+import axiosInstance from "../../libs/axios";
+import { showAlert } from "../../components/elements/SweetAlert";
 
 export const useCreateProduct = () => {
   const [state, setState] = useState({
@@ -15,33 +15,34 @@ export const useCreateProduct = () => {
     setState((prev) => ({ ...prev, pending: true, error: null }));
 
     try {
-      const response = await axiosInstance.post("/products", data)
+      const response = await axiosInstance.post("/products", data);
+      const { message } = response.data;
       setState({
         data: response.data.data,
-        message: response.data.message,
-        pending: false, 
+        message,
+        pending: false,
         error: null,
         status: response.data.status,
       });
 
-      Swal.fire({
-        title: "Success!",
-        text: "Product has been created successfully.",
+      // Menampilkan notifikasi sukses
+      await showAlert({
+        title: "Berhasil!",
+        message: "Produk berhasil dibuat.",
         icon: "success",
-        confirmButtonText: "OK",
       });
     } catch (err) {
       setState((prev) => ({
         ...prev,
-        error: err instanceof Error ? err : new Error("Failed to create product"),
-        message: "Failed to create product",
+        error: err instanceof Error ? err : new Error("Gagal membuat produk"),
+        message: "Gagal membuat produk",
       }));
 
-      Swal.fire({
-        title: "Error!",
-        text: "Failed to create product.",
+      // Menampilkan notifikasi error
+      await showAlert({
+        title: "Gagal!",
+        message: "Gagal membuat produk.",
         icon: "error",
-        confirmButtonText: "OK",
       });
     } finally {
       setState((prev) => ({
@@ -53,4 +54,3 @@ export const useCreateProduct = () => {
 
   return { ...state, createProduct };
 };
-

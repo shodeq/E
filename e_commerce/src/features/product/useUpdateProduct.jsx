@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Swal from "sweetalert2";
-import axiosInstance from "../../libs/axios/Index";
+import axiosInstance from "../../libs/axios";
+import { showAlert } from "../../components/elements/SweetAlert";
 
 export const useUpdateProduct = () => {
   const [state, setState] = useState({
@@ -15,34 +15,35 @@ export const useUpdateProduct = () => {
     setState(prev => ({ ...prev, pending: true, error: null }));
 
     try {
-      const response = await axiosInstance.put(`/products/${id}`, data)
+      const response = await axiosInstance.put(`/products/${id}`, data);
+      const { message } = response.data;
       setState({
-        data: response.data.data,
-        message: response.data.message,
-        pending: false, 
+        product: response.data.data,
+        message,
+        pending: false,
         error: null,
         status: response.data.status,
       });
 
-      Swal.fire({
-        title: "Success!",
-        text: "Product has been updated successfully.",
+      // Menampilkan notifikasi sukses
+      await showAlert({
+        title: "Berhasil!",
+        message: "Produk berhasil diperbarui.",
         icon: "success",
-        confirmButtonText: "OK",
       });
     } catch (err) {
       setState(prev => ({
         ...prev,
         pending: false,
-        error: err instanceof Error ? err : new Error("Failed to update product"),
-        message: "Failed to update product",
+        error: err instanceof Error ? err : new Error("Gagal memperbarui produk"),
+        message: "Gagal memperbarui produk",
       }));
 
-      Swal.fire({
-        title: "Error!",
-        text: "Failed to update product.",
+      // Menampilkan notifikasi error
+      await showAlert({
+        title: "Gagal!",
+        message: "Gagal memperbarui produk.",
         icon: "error",
-        confirmButtonText: "OK",
       });
     }
   };
