@@ -4,12 +4,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useProductId } from "../../../features/product/useProductId";
-import { useUpdateProduct } from "../../../features/product/useUpdateProduct";
+import { useMutationUpdateProduct } from "../../../features/product/useUpdateProduct";
 
 export default function DashboardProductUpdate() {
     const { id } = useParams();
     const { data: product } = useProductId(id);
-    const { updateProduct, message } = useUpdateProduct();
+    const { mutate, message } = useMutationUpdateProduct();
     const navigate = useNavigate();
 
     const updateProductSchema = Yup.object().shape({
@@ -41,7 +41,7 @@ export default function DashboardProductUpdate() {
         },
         validationSchema: updateProductSchema,
         onSubmit: (values) => {
-            updateProduct(values, id); 
+            mutate(values, id); 
             navigate("/dashboard/product");  
         },
     });

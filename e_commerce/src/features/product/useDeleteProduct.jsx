@@ -2,10 +2,9 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axiosInstance from "../../libs/axios/Index";
 
-export const useDeleteProduct = () => {
+export const useMutationDeleteProduct = () => {
   const navigate = useNavigate();
-
-  const deleteProduct = async (id) => {
+  const mutate = async (id) => {
     try {
       const result = await Swal.fire({
         title: "Are you sure?",
@@ -38,5 +37,5 @@ export const useDeleteProduct = () => {
     }
   };
 
-  return { deleteProduct };
+  return { mutate };
 };

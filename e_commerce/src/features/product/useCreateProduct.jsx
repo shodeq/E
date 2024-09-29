@@ -2,7 +2,7 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import axiosInstance from "../../libs/axios/Index";
 
-export const useCreateProduct = () => {
+export const useMutationCreateProduct = () => {
   const [state, setState] = useState({
     data: null,
     message: "",
@@ -11,7 +11,7 @@ export const useCreateProduct = () => {
     status: "",
   });
 
-  const createProduct = async (data) => {
+  const mutate = async (data) => {
     setState((prev) => ({ ...prev, pending: true, error: null }));
 
     try {
@@ -51,6 +51,6 @@ export const useCreateProduct = () => {
     }
   };
 
-  return { ...state, createProduct };
+  return { ...state, mutate };
 };
 

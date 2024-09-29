@@ -3,14 +3,14 @@ import { FaTrashAlt } from "react-icons/fa";
 import { TbEdit } from "react-icons/tb";
 import { IoArrowBack } from "react-icons/io5";
 import { useProductId } from "../../../features/product/useProductId";
-import { useDeleteProduct } from "../../../features/product/useDeleteProduct";
+import { useMutationDeleteProduct } from "../../../features/product/useDeleteProduct";
 
 export default function DashboardProductDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
 
   const { data: product, loading, error } = useProductId(id);
-  const { deleteProduct } = useDeleteProduct();
+  const { mutate } = useMutationDeleteProduct();
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -61,7 +61,7 @@ export default function DashboardProductDetail() {
               </button>
 
               <button
-                onClick={deleteProduct}
+                onClick={() => mutate(id)}
                 className="flex-1 py-3 bg-red-50 text-red-600 rounded-[2.5rem] font-semibold hover:bg-red-100 flex items-center justify-center"
               >
                 <FaTrashAlt className="mr-2 text-lg" />

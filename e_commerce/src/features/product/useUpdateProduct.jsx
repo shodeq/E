@@ -2,7 +2,7 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import axiosInstance from "../../libs/axios/Index";
 
-export const useUpdateProduct = () => {
+export const useMutationUpdateProduct = () => {
   const [state, setState] = useState({
     product: { name: "", description: "", category: "", image: "", price: "" },
     pending: false,
@@ -11,7 +11,7 @@ export const useUpdateProduct = () => {
     status: "",
   });
 
-  const updateProduct = async (data, id) => {
+  const mutate = async (data, id) => {
     setState(prev => ({ ...prev, pending: true, error: null }));
 
     try {
@@ -47,5 +47,5 @@ export const useUpdateProduct = () => {
     }
   };
 
-  return { ...state, updateProduct };
+  return { ...state, mutate };
 };

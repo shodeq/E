@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { useCreateProduct } from "../../../features/product/useCreateProduct";
 import { FaPlus } from "react-icons/fa";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useMutationCreateProduct } from "../../../features/product/useCreateProduct";
 
 export default function DashboardProductCreate() {
-  const { createProduct } = useCreateProduct();
+  const { mutate } = useMutationCreateProduct();
   const navigate = useNavigate();
 
   const ProductSchema = Yup.object().shape({
@@ -35,7 +35,7 @@ export default function DashboardProductCreate() {
     },
     validationSchema: ProductSchema,
     onSubmit: (values, { resetForm }) => {
-      createProduct({...values, price: Number(values.price)});
+      mutate({...values, price: Number(values.price)});
       resetForm();
       navigate("/dashboard/product");
     },

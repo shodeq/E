@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { IoEyeSharp } from 'react-icons/io5';
 import { TbEdit } from 'react-icons/tb';
 import { FaTrashAlt } from 'react-icons/fa';
-import { useDeleteProduct } from "../../../features/product/useDeleteProduct";
 import { useProducts } from "../../../features/product/useProduct";
+import { useMutationDeleteProduct } from './../../../features/product/useDeleteProduct';
 
 export default function DashboardProduct() {
     const [page, setPage] = useState(1);
@@ -13,7 +13,7 @@ export default function DashboardProduct() {
 
     const { data: products, isLoading, error, totalPages } = useProducts(limit, page);
 
-    const { deleteProduct } = useDeleteProduct();
+    const { mutate } = useMutationDeleteProduct();
 
     const handlePageChange = (newPage) => {
         if (newPage > 0 && newPage <= totalPages) {
@@ -139,7 +139,7 @@ export default function DashboardProduct() {
                                                             </Link>
                                                             <button
                                                                 type="button"
-                                                                onClick={() => deleteProduct(product.id)}
+                                                                onClick={() => mutate(product.id)}
                                                                 className="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
                                                             >
                                                                 <FaTrashAlt className="mr-1" />
